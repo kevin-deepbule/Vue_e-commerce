@@ -6,24 +6,64 @@
                 <img src="../assets/logo.png" alt="" srcset="">
             </div>
             <!-- 登录表单区 -->
-            <el-form ref="form" label-width="0px" class="login_form">
-                <el-form-item lable="用户名">
-                    <el-input></el-input>
+            <el-form ref="loginFormRef" :model='loginForm' label-width="0px" class="login_form" :rules='rules'>
+                <el-form-item lable="用户名" prop="username">
+                    <el-input  placeholder="用户名" prefix-icon="el-icon-user-solid" v-model="loginForm.username"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-input></el-input>
+                <el-form-item prop="password" label="">
+                    <el-input  placeholder="密码" prefix-icon="el-icon-lock" v-model="loginForm.password" type="password"></el-input>
                 </el-form-item>
                 <el-form-item class="btns">
-                    <el-button type="primary" disabled>登录</el-button>
-                    <el-button type="info" disabled>重置</el-button>
+                    <el-button type="primary" @click="login('loginFormRef')" >登录</el-button>
+                    <el-button type="info"  @click="resetForm('loginFormRef')">重置</el-button>
                 </el-form-item>
             </el-form>
-        </div>
+        </div><!-- <el-alert title="错误提示的文案" type="error"  effect="dark"></el-alert> -->
     </div>
 </template>
 <script>
 export default {
+  data () {
+    return {
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+        ]
+      }
 
+    }
+  },
+  methods: {
+    login (formName) {
+      this.$refs[formName].validate(async (valid) => {
+        if (!valid) {} else {
+          const { data: res } = await this.$http.post('login', this.loginForm)// 选择data 重名名为res
+          console.log(res)
+          if (res.meta.status !== 200) { this.$message.error('登录失败！') } else {
+            this.$message.success('登录成功！')
+            // 将登录成功后的 token ，保存到客户端的sessionStroage中 token是服务器给的“令牌”
+            // 项目中除了登录之外的其他api接口，必须在登录后访问
+            // token 只在当前网站打开期间生效，所以将 token 保存在 sessionStorage中
+            // 通过编程式导航跳转到后台主页，路由地址是 /home
+            window.sessionStorage.setItem('token', res.data.token)
+            this.$router.push('/home')
+          }
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    }
+  }
 }
 
 </script>
