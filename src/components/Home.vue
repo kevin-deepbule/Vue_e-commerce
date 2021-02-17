@@ -2,19 +2,19 @@
 <el-container class="home-container">
      <el-header >
        <div @click="a">
-         <img src="../assets/heima.png" alt="" srcset="">
+         <img src="../assets/touxiang.jpg" alt="" srcset="">
          <span>电商后台管理系统</span>
         </div>
-        <el-button type="info" @click="logOut">退出</el-button>
+        <el-button type="info" @click="logOut">登出</el-button>
      </el-header>
     <el-container>
         <el-aside :width="iscollapse ? '64px' :'200px'">
           <div class="toggle-button" @click="toggleCollapse">|||</div>
           <el-menu :collapse = "iscollapse" :collapse-transition="false" :router="true"
           class="el-menu-vertical-demo"
-      background-color="#333744" unique-opened
-      text-color="#fff" :default-active = 'activePath'
-      active-text-color="#409eff">
+      background-color="#46A8A8" unique-opened
+      text-color="#ccc" :default-active = 'activePath'
+      active-text-color="#3429DC">
       <el-submenu :index="item.id+''"  v-for="item in menulist" :key="item.id" :unique-opened="true">
         <template slot="title">
           <i :class="home_icon[item.id]" style="font-size:22px" ></i>
@@ -41,8 +41,10 @@
  @import "../assets/font/style.css";
 </style>
 <style lang='less' scoped>
+
 .el-header{
-  background-color: #373d41;
+
+  background-color: #BBE6D6;
   display: flex;
   justify-content: space-between;
   padding-left: 0;
@@ -56,9 +58,15 @@
   span {
     margin-left: 15px;
   }
+  img {
+    width: 59px;
+    height: 59px;
+    border-radius: 59px;
+    margin: 2px 10px;
+  }
 }
 .el-aside{
-  background-color: #333744;
+  background-color:#46A8A8;
   width: 200px;
   .el-menu{
     border-right: none;
@@ -71,9 +79,9 @@
   height: 100%;
 }
 .toggle-button{
-  background-color: #4a5064;
-  font-size: 10px;
-  color: #fff;
+  background-color: #46a8a8;
+  font-size: 14px;
+  color: rgb(248, 98, 98);
   text-align: center;
   letter-spacing: 0.3em;
   cursor: pointer;
@@ -122,6 +130,7 @@ export default {
     a () {
       this.$router.replace('/welcome')
       window.sessionStorage.setItem('activePath', '')
+      this.activePath = sessionStorage.getItem('activePath')
     },
     saveNavState (activePath) {
       window.sessionStorage.setItem('activePath', activePath)
