@@ -12,7 +12,7 @@
 	"db_config" : {
 		"protocol" : "mysql",
 		"host" : "127.0.0.1",
-		"database" : "vue_e_commece",
+		"database" : "a",
 		"user" : "root",
 		"password" : "19981105ykw",
 		"port" : 3306
