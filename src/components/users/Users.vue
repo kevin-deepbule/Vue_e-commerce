@@ -76,6 +76,7 @@
                 type="warning"
                 icon="el-icon-setting"
                 size="mini"
+                @click="setRole(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -141,6 +142,27 @@
         <el-button type="primary" @click="editUser">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+  title="分配角色"
+  :visible.sync="setRoleDialogVisible"
+  width="50%"
+>
+  <p>用户:&nbsp;  {{userInfo.username}}</p>
+  <p>角色: &nbsp; {{userInfo.role_name}}</p>
+  <p>选择角色<el-select v-model="selectedRole"  placeholder="请选择">
+    <el-option
+      v-for="item in rolesList"
+      :key="item.id"
+      :label="item.roleName"
+      :value="item.id">
+    </el-option>
+  </el-select></p>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
+  </span>
+</el-dialog>
+
     <!-- 分页 -->
     <el-pagination
       @size-change="handleSizeChange"
@@ -188,6 +210,10 @@ export default {
       return cb(new Error('请输入合法的手机号'))
     }
     return {
+      selectedRole: [],
+      rolesList: [],
+      userInfo: {},
+      setRoleDialogVisible: false,
       queryInfo: {
         query: '',
         pagenum: 1,
@@ -249,6 +275,31 @@ export default {
     this.getUserList()
   },
   methods: {
+    saveRoleInfo: async function () {
+      const { data: res } = await this.$http.put('users/' + this.userInfo.id + '/role', { rid: this.selectedRole })
+      console.log(res)
+      if (res.meta.status !== 200) {
+        this.$message.error('更新用户角色失败')
+      } else {
+        this.getUserList()
+        this.setRoleDialogVisible = false
+        this.$message.success('更新用户角色成功')
+      }
+    },
+    getRolesList: async function () {
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) {
+        this.$message.error('获取用户列表错误')
+      } else {
+        this.rolesList = res.data
+        this.$message.success('获取用户列表成功')
+      }
+    },
+    setRole: function (row) {
+      this.setRoleDialogVisible = true
+      this.userInfo = row
+      this.getRolesList()
+    },
     getUserList: async function () {
       const { data: res } = await this.$http.get('users', {
         params: this.queryInfo
@@ -349,6 +400,11 @@ export default {
     editDialogVisible: function (n) {
       if (!n) {
         this.$refs.editFormRef.resetFields()
+      }
+    },
+    setRoleDialogVisible: function (n) {
+      if (!n) {
+        this.selectedRole = []
       }
     }
   }
