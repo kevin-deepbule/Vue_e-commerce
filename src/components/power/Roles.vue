@@ -262,7 +262,7 @@ export default {
       if (confirm !== 'confirm') {
         this.$message.info('已取消删除操作')
       } else {
-        const { data: res } = await this.$http.delete('roles/' + row.id + 'rights/' + right)
+        const { data: res } = await this.$http.delete('roles/' + row.id + '/rights/' + right)
         console.log(res)
         if (res.meta.status !== 200) {
           this.$message.error('修改角色对应权限失败')
