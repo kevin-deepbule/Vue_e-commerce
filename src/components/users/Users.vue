@@ -337,6 +337,7 @@ export default {
             return this.$message.error('添加失败')
           } else {
             this.addDialogVisible = false
+            this.getUserList()
             return this.$message.success('添加成功')
           }
         }
