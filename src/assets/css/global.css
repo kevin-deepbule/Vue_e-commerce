@@ -6,3 +6,6 @@ html,body,#app {
 #app{
   min-width: 1366px;
 }
+.el-cascader-panel .el-cascader-menu {
+  height: 300px;
+}

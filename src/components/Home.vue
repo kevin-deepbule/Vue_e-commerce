@@ -131,7 +131,6 @@ export default {
     async getMenulist () {
       const { data: res } = await this.$http.get('menus')
       this.menulist = res.data
-      console.log(res)
     },
     toggleCollapse () {
       this.iscollapse = !this.iscollapse
