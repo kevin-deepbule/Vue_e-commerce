@@ -276,7 +276,7 @@ export default {
       this.cateList = res.data
     },
     handleCateChange: async function () {
-      if (this.seletedCateList.length !== 3) {
+      if (this.seletedCateList.length === 0) {
         return this.$message.info('请选择商品后查看')
       }
       const p = this.activeName === 'first' ? 'many' : 'only'

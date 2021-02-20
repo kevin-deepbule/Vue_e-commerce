@@ -9,3 +9,9 @@ html,body,#app {
 .el-cascader-panel .el-cascader-menu {
   height: 300px;
 }
+.el-step__title  {
+  font: 14px "华文行楷";
+}
+.ql-editor{
+  min-height: 300px;
+}
